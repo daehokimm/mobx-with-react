@@ -1,17 +1,22 @@
 import React from "react";
 import BasketItem from "./BasketItem";
-import { inject, observer } from "mobx-react";
+import { useObserver } from "mobx-react";
+import useStore from "../useStore";
 
-const BasketItemList = ({ items, onTake }) => {
-  const itemList = items.map((item) => (
-    <BasketItem item={item} key={item.name} onTake={onTake} />
-  ));
-  console.log(`basket items : ${itemList}`);
-  return <div>{itemList}</div>;
+const BasketItemList = () => {
+  const { market } = useStore();
+
+  const onTake = (name) => {
+    market.take(name);
+  };
+
+  return useObserver(() => {
+    const itemList = market.selectedItems.map((item) => (
+      <BasketItem item={item} key={item.name} onTake={onTake} />
+    ));
+
+    return <div>{itemList}</div>;
+  });
 };
 
-export default inject(({ market }) => ({
-  items: market.selectedItems,
-  total: market.total,
-  onTake: market.take,
-}))(observer(BasketItemList));
+export default BasketItemList;

@@ -1,19 +1,13 @@
-import { observable, action } from "mobx";
+import { observable } from "mobx";
 
-export default class CounterStore {
-  @observable number = 0;
-
-  constructor(root) {
-    this.root = root;
-  }
-
-  @action increase = () => {
-    console.log("증가!!");
+const counter = observable({
+  number: 1,
+  increase() {
     this.number++;
-  };
-
-  @action decrease = () => {
-    console.log("감소ㅜㅜ");
+  },
+  decrease() {
     this.number--;
-  };
-}
+  },
+});
+
+export { counter };
